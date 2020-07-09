@@ -16,12 +16,12 @@ import java.util.concurrent.TimeoutException;
  * @description 功能
  */
 @Slf4j
-public class FutureDemo {
+public class TimeoutNoMatchFutureDemo {
     
     public static void main(String[] args) {
-        FutureDemo futureDemo = new FutureDemo();
+        TimeoutNoMatchFutureDemo timeoutNoMatchFutureDemo = new TimeoutNoMatchFutureDemo();
         System.out.println("开始准备比赛，准备时间5秒钟");
-        Set<String> preparedPlayers = futureDemo.startCompute();
+        Set<String> preparedPlayers = timeoutNoMatchFutureDemo.startCompute();
         System.out.println("准备时间已到，比赛开始，参赛运动员为：" + preparedPlayers);
     }
     
