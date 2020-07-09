@@ -1,5 +1,6 @@
 package com.concurrency.practice.countdownlatch;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -7,12 +8,13 @@ import java.util.concurrent.Executors;
 /**
  * @author altenchen
  * @time 2020/7/9
- * @description 功能: 一个线程等待其他多个线程都执行完毕，再继续自己的工作
+ * @description 功能：多个线程等待某一个线程的信号，同时开始执行
  */
-public class CountDownLatchDemo {
+public class CountDownLatchDemo2 {
     
     public static void main(String[] args) throws InterruptedException {
-        CountDownLatch countDownLatch = new CountDownLatch(5);
+        System.out.println("运动员有5秒准备时间");
+        CountDownLatch latch = new CountDownLatch(1);
         ExecutorService service = Executors.newFixedThreadPool(5);
         for (int i = 0; i < 5; i++) {
             int no = i + 1;
@@ -20,22 +22,23 @@ public class CountDownLatchDemo {
                 @Override
                 public void run() {
                     try {
-                        long runTime = (long) (Math.random() * 10000);
-                        Thread.sleep(runTime);
-                        System.out.println(no + "号运动员已完成比赛，耗时" + runTime + "毫秒");
+                        long prepareTime = (long)(Math.random()* 8000);
+                        Thread.sleep(prepareTime);
+                        System.out.println(no + "号运动员准备完毕了，耗时" + prepareTime + "ms, 等待裁判员的发令枪");
+                        latch.await();
+                        System.out.println(no + "号运动员开始跑步了");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                    } finally {
-                        countDownLatch.countDown();
                     }
                 }
             };
             service.submit(runnable);
         }
-        System.out.println("等待所有运动员完成比赛。");
-        countDownLatch.await();
-        System.out.println("所有人都完成比赛。");
+        Thread.sleep(5000);
+        System.out.println("5秒准备时间已过，发令枪响，开始比赛！");
+        latch.countDown();
         service.shutdown();
     }
+    
     
 }
