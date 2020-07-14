@@ -1,5 +1,9 @@
 package com.concurrency.practice.lock.deadlock;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
+
 /**
  * @description:
  * @create: 2020/7/14
@@ -45,7 +49,7 @@ public class MustDeadLock implements Runnable{
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         MustDeadLock r1 = new MustDeadLock();
         MustDeadLock r2 = new MustDeadLock();
 
@@ -57,6 +61,17 @@ public class MustDeadLock implements Runnable{
 
         t1.start();
         t2.start();
+
+        Thread.sleep(1000);
+        ThreadMXBean threadMXBean = ManagementFactory.getThreadMXBean();
+        long[] deadlockedThreads = threadMXBean.findDeadlockedThreads();
+        if (deadlockedThreads != null && deadlockedThreads.length > 0) {
+            for (int i = 0; i < deadlockedThreads.length; i++) {
+                ThreadInfo threadInfo = threadMXBean.getThreadInfo(deadlockedThreads[i]);
+                System.out.println("线程id为[" + threadInfo.getThreadId() + "], 线程名为[" + threadInfo.getThreadName() + "]的线程已经发生死锁，需要的锁正在被线程[" + threadInfo.getLockOwnerName() +"]持有。");
+            }
+        }
+
 
     }
 }
