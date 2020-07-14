@@ -41,13 +41,13 @@ public class BlockingQueueTest {
     
     private static void priorityQueueTest() throws InterruptedException {
         PriorityBlockingQueue<Person> priorityQueue = new PriorityBlockingQueue();
-        priorityQueue.add(new Person(5, "KOBE"));
+        priorityQueue.add(new Person(5, 5));
         System.out.println("容器为：" +priorityQueue);
-        priorityQueue.add(new Person(4, "JORDAN"));
+        priorityQueue.add(new Person(4, 4));
         System.out.println("容器为：" + priorityQueue);
-        priorityQueue.add(new Person(6, "Mike"));
+        priorityQueue.add(new Person(6, 6));
         System.out.println("容器为：" + priorityQueue);
-        priorityQueue.add(new Person(1, "ALLEN"));
+        priorityQueue.add(new Person(1, 1));
         System.out.println("容器为：" + priorityQueue);
     
         System.out.println("获取元素：" + priorityQueue.take().getId());

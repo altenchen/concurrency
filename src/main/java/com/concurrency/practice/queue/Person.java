@@ -1,44 +1,44 @@
 package com.concurrency.practice.queue;
 
+import lombok.Data;
+
+import java.util.Comparator;
+
 /**
  * @author altenchen
  * @time 2020/7/4
  * @description 功能
  */
+@Data
 public class Person implements Comparable<Person> {
     
     private int id;
     
+    private long timestamp;
+    
     private String name;
     
-    public Person(int id, String name) {
+    public Person(int id, long timestamp) {
         this.id = id;
-        this.name = name;
+        this.timestamp = timestamp;
     }
     
-    public int getId() {
-        return id;
-    }
-    
-    public void setId(int id) {
-        this.id = id;
-    }
-    
-    public String getName() {
-        return name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    @Override
-    public String toString() {
-        return this.id + ":" + this.name;
-    }
+    public static final Comparator<Person> COMPARATOR = Comparator.comparingLong(Person::getTimestamp)
+            .thenComparingInt(Person::getId);
     
     @Override
     public int compareTo(Person o) {
-        return this.id < o.id ? 1 : (this.id > o.id ? -1 : 0);
+        return COMPARATOR.compare(this, o);
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (null == o || getClass() != o.getClass()) {
+            return false;
+        }
+        return super.equals(o);
     }
 }
