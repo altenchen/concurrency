@@ -29,21 +29,43 @@ public class TransferMoney implements Runnable {
     }
 
     private static void transferMoney(Account from, Account to, int amount) {
-        //先获取两把锁，然后开始转账
-        synchronized (to) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        int fromHash = System.identityHashCode(from);
+        int toHash = System.identityHashCode(to);
+        if (fromHash < toHash) {
+            //先获取两把锁，然后开始转账
             synchronized (from) {
-                if (from.balance - amount < 0) {
-                    System.out.println("余额不足，转账失败。");
-                    return;
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-                from.balance -= amount;
-                to.balance += amount;
-                System.out.println("成功转账" + amount + "元");
+                synchronized (to) {
+                    if (from.balance - amount < 0) {
+                        System.out.println("余额不足，转账失败。");
+                        return;
+                    }
+                    from.balance -= amount;
+                    to.balance += amount;
+                    System.out.println("成功转账" + amount + "元");
+                }
+            }
+        } else if (fromHash > toHash) {
+            //先获取两把锁，然后开始转账
+            synchronized (to) {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                synchronized (from) {
+                    if (from.balance - amount < 0) {
+                        System.out.println("余额不足，转账失败。");
+                        return;
+                    }
+                    from.balance -= amount;
+                    to.balance += amount;
+                    System.out.println("成功转账" + amount + "元");
+                }
             }
         }
     }
