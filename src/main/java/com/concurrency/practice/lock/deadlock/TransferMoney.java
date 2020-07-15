@@ -31,6 +31,11 @@ public class TransferMoney implements Runnable {
     private static void transferMoney(Account from, Account to, int amount) {
         //先获取两把锁，然后开始转账
         synchronized (to) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             synchronized (from) {
                 if (from.balance - amount < 0) {
                     System.out.println("余额不足，转账失败。");
