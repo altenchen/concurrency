@@ -7,6 +7,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CustomizeThreadFactory {
+
+    public CustomizeThreadFactory(){
+    }
     
     public static class NameThreadFactory implements ThreadFactory {
 
@@ -38,13 +41,5 @@ public class CustomizeThreadFactory {
             return t;
         }
     }
-
-    public ThreadPoolExecutor mainTaskExecutor() {
-        //不限制queue的大小，
-        return new ThreadPoolExecutor(10, 10, 30000L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<>(), new NameThreadFactory("mainTaskExecutor"));
-        
-    }
-
 
 }
