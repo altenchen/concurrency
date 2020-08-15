@@ -1,4 +1,4 @@
-package com.concurrency.practice.basic.thread;
+package com.concurrency.practice.basic.thread.rightvolatile;
 
 /**
  * @description:
