@@ -22,7 +22,7 @@ public class Producer implements Runnable {
     public void run() {
         int num = 0;
         try {
-            while (num < 100000 && !canceled) {
+            while (num < 100000 && !Thread.currentThread().isInterrupted()) {
                 if (num % 50 == 0) {
                     storage.put(num);
                     System.out.println(num + "是50的倍数，被放到仓库中了。");

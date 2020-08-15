@@ -25,8 +25,9 @@ public class StartUp {
         System.out.println("消费者不需要更多数据了");
 
         //一旦消费者不需要更多数据，应该让生产者也停止下来，但实际情况却停不下来
-        producer.canceled = true;
-        System.out.println(producer.canceled);
+//        producer.canceled = true;
+//        System.out.println(producer.canceled);
+        producerThread.interrupt();
     }
 
 }
